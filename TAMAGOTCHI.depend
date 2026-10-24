@@ -1,0 +1,69 @@
+# depslib dependency file v1.0
+1792814758 source:c:\users\cadudz\downloads\tamagotchi\main.c
+	<string.h>
+	"raylib.h"
+	"computacao.h"
+
+1791830181 c:\users\cadudz\downloads\tamagotchi\exibicao.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<conio.h>
+	<string.h>
+	<raylib.h>
+	<raymath.h>
+
+1791828265 source:c:\users\cadudz\downloads\tamagotchi\exibicao.c
+	"exibicao.h"
+
+1792637452 source:c:\users\cadudz\downloads\tamagotchi\recursos.rc
+
+1791733494 source:c:\users\cadudz\downloads\tamagotchi\computacao.c
+	"computacao.h"
+
+1791825915 c:\users\cadudz\downloads\tamagotchi\computacao.h
+	<time.h>
+	<stdlib.h>
+
+1791831221 c:\users\cadudz\downloads\tamagotchi\include\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1791831221 c:\users\cadudz\downloads\tamagotchi\include\raymath.h
+	<math.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+	<xmmintrin.h>
+
+1791831221 c:\users\cadudz\downloads\tamagotchi\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1791831221 c:\users\cadudz\downloads\tamagotchi\raymath.h
+	<math.h>
+	<nmmintrin.h>
+	<smmintrin.h>
+	<tmmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+	<xmmintrin.h>
+
+1791831221 c:\users\cadudz\downloads\tamagotchi\rlgl.h
+	<stdbool.h>
+	"external/rlsw.h"
+	<OpenGL/gl.h>
+	<OpenGL/glext.h>
+	<GL/gl.h>
+	"external/glad.h"
+	<GLES3/gl3.h>
+	<GLES2/gl2ext.h>
+	"external/glad_gles2.h"
+	<GLES2/gl2.h>
+	<GLES2/gl2ext.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+
