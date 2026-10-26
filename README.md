@@ -1,1 +1,0 @@
-# TAMAGOTCHI_C

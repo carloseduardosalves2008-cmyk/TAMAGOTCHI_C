@@ -1,19 +1,15 @@
 # depslib dependency file v1.0
-1792814758 source:c:\users\cadudz\downloads\tamagotchi\main.c
+1793032554 source:c:\users\cadudz\downloads\tamagotchi\main.c
 	<string.h>
 	"raylib.h"
 	"computacao.h"
+	"exibicao.h"
 
-1791830181 c:\users\cadudz\downloads\tamagotchi\exibicao.h
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-	<conio.h>
+1793032180 c:\users\cadudz\downloads\tamagotchi\exibicao.h
 	<string.h>
 	<raylib.h>
-	<raymath.h>
 
-1791828265 source:c:\users\cadudz\downloads\tamagotchi\exibicao.c
+1793032212 source:c:\users\cadudz\downloads\tamagotchi\exibicao.c
 	"exibicao.h"
 
 1792637452 source:c:\users\cadudz\downloads\tamagotchi\recursos.rc

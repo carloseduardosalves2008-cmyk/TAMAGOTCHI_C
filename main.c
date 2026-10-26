@@ -2,6 +2,7 @@
 #include <string.h>
 #include "raylib.h"
 #include "computacao.h"
+#include "exibicao.h"
 
 int main()
 {
@@ -292,43 +293,19 @@ int main()
         DrawTexture(controle,610,30,WHITE);
 
         //DESENHO BOTAO F
-        if (botaoF_press){DrawTexture(Fbutton,200,580,WHITE); botaoF_press=false;}
-        else {DrawTexture(Fbutton_press,200,580,WHITE);}
+        DrawButton(Fbutton_press,Fbutton,200,580,&botaoF_press);
 
         //DESENHO BOTAO C
-        if (botaoC_press)
-        {DrawTexture(Cbutton,400,580,WHITE); botaoC_press=false;}
-        else {DrawTexture(Cbutton_press,400,580,WHITE);}
-
+        DrawButton(Cbutton_press,Cbutton,400,580,&botaoC_press);
 
         //DESENHO PET E MOLDURA
-        DrawRectangle(150,40,400,400,cor_quadro);
-        DrawRectangleLines(20,20,680,680,cor_quadro);
-        DrawTexture(pet,190,80,WHITE);
+        DrawPet(pet,cor_quadro);
 
         //DESENHO BARRA DE FELICIDADE
-        qnthearts=felicidade/10;
-        for (int c=0;c<qnthearts;c++)
-        {
-            DrawTexture(smile,barra_felicidade_x+(c*36),barra_felicidade_y,WHITE);
-        }
-        qntheartsmax=felicidademax/10;
-        for (int c=felicidade/10;c<qntheartsmax;c++)
-        {
-            DrawTexture(darksmile,barra_felicidade_x+(c*36),barra_felicidade_y,WHITE);
-        }
+        DrawPetLifeBar(smile,darksmile,barra_felicidade_x,barra_felicidade_y,felicidade,felicidademax);
 
         //DESENHO BARRA DE FOME
-        qnthearts=fome/10;
-        for (int c=0;c<qnthearts;c++)
-        {
-            DrawTexture(heart,barra_fome_x+(c*36),barra_fome_y,WHITE);
-        }
-        qntheartsmax=fomemax/10;
-        for (int c=fome/10;c<qntheartsmax;c++)
-        {
-            DrawTexture(darkheart,barra_fome_x+(c*36),barra_fome_y,WHITE);
-        }
+        DrawPetLifeBar(heart,darkheart,barra_fome_x,barra_fome_y,fome,fomemax);
 
         //LOGICA DE DANO
         if (tempo_atual-ultimo_dano_felicidade>=tempo_dano)
@@ -355,7 +332,7 @@ int main()
             {felicidade+=(felicidademax-felicidade);}
 
             //DESENHO BOTAO C
-            DrawTexture(Cbutton_press,400,580,WHITE);
+            DrawButton(Cbutton_press,Cbutton,400,580,&botaoC_press);
             botaoC_press=true;
 
             cuidado++;
@@ -374,7 +351,7 @@ int main()
             {fome+=(fomemax-fome);}
 
             //DESENHO BOTAO F
-            DrawTexture(Fbutton_press,200,580,WHITE);
+            DrawButton(Fbutton_press,Fbutton,200,580,&botaoF_press);
             botaoF_press=true;
 
             cuidado++;
@@ -382,6 +359,30 @@ int main()
             ultima_comida=tempo_atual;
         }
         EndDrawing();
+    }
+
+    //LIMPEZA SE A JANELA FOR FECHADA
+    if (WindowShouldClose())
+    {
+        UnloadTexture(pet);
+        UnloadTexture(pet_perder);
+        UnloadTexture(Fbutton);
+        UnloadTexture(Cbutton);
+        UnloadTexture(Fbutton_press);
+        UnloadTexture(Cbutton_press);
+        UnloadTexture(controle);
+        UnloadTexture(heart);
+        UnloadTexture(smile);
+        UnloadTexture(darkheart);
+        UnloadTexture(darksmile);
+        UnloadMusicStream(musica);
+        UnloadSound(som_pet);
+        UnloadSound(perder);
+        UnloadSound(comer);
+        UnloadSound(ronronar);
+        CloseAudioDevice();
+        CloseWindow();
+        return 0;
     }
 
     //GAME OVER
@@ -405,8 +406,8 @@ int main()
             strcpy(msg,"-> CUIDE MELHOR DO SEU PET NA PROXIMA VEZ ");
             DrawText(msg,50,550,25,WHITE);
 
-            DrawRectangle(150,80,400,400,cor_quadro);
-            DrawTexture(pet_perder,190,120,WHITE);
+            DrawPetLose(pet_perder,cor_quadro);
+
             EndDrawing();
         }
         PlaySound(perder);

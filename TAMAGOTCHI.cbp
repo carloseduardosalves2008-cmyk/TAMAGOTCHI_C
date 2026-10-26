@@ -50,6 +50,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="computacao.h" />
+		<Unit filename="exibicao.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="exibicao.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

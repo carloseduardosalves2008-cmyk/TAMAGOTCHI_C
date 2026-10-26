@@ -1,25 +1,11 @@
 #ifndef EXIBICAO_H_INCLUDED
 #define EXIBICAO_H_INCLUDED
-#undef PlaySound
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <conio.h>
 #include <string.h>
 #include <raylib.h>
-#include <raymath.h>
 
-
-void gatodesenho ();
-void gatoaltavida ();
-void gatobaixavida ();
-void gatodormir();
-void raposa ();
-void rato ();
-void pato ();
-void barradevida (int vida_atual, int vida_max, char nomebarra[]);
-void desenharjogo (int felicidade, int felicidademax,int fome, int fomemax);
-void gatomorrer();
-void encerramento (int segtot);
+void DrawPet(Texture2D Pet, Color cor_detalhes);
+void DrawPetLose(Texture2D Pet, Color cor_detalhes);
+void DrawPetLifeBar(Texture2D hearts, Texture2D black_hearts, int barra_x, int barra_y, int heart_status, int heart_max);
+void DrawButton (Texture2D Button_press, Texture2D Button, int x, int y, bool* button_press);
 
 #endif // EXIBICAO_H_INCLUDED
