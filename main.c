@@ -15,29 +15,26 @@ int main()
     int felicidade=felicidademax;
     int fomemax=100;
     int fome=fomemax;
-    int qnthearts;
-    int qntheartsmax;
     int barra_felicidade_x = 170;
     int barra_felicidade_y = 470;
     int barra_fome_x = 170;
     int barra_fome_y = 520;
     int volume=-1;
     int cuidado=0;
-    int tipo=sorteio(9,1);
+    int tipo = sorteio(10,1);
     int mostrar=1;
 
     bool botaoC_press=false;
     bool botaoF_press=false;
 
     double tempo_inicio_aviso;
-    char msg[50];
-    char pelagem[11];
+    char msg[100];
+    char nome[11];
 
-    Music musica;
+    Music musica = LoadMusicStream("musica.mp3");;
     Sound som_pet;
     Sound perder = LoadSound("perder.wav");
     Sound comer = LoadSound("comer.wav");
-    Sound ronronar = LoadSound("ronronar.wav");
 
     Rectangle FbuttonP = { 200, 580, 96, 96 };;
     Rectangle CbuttonP = { 400, 580, 96, 96 };;
@@ -49,10 +46,10 @@ int main()
     Texture2D Fbutton_press;
     Texture2D Cbutton_press;
     Texture2D controle = LoadTexture("controle.png");
-    Texture2D smile = LoadTexture("smile2.png");
-    Texture2D heart = LoadTexture("hungry2.png");
-    Texture2D darksmile = LoadTexture("darksmile2.png");
-    Texture2D darkheart = LoadTexture("darkhungry2.png");
+    Texture2D smile = LoadTexture("smile.png");
+    Texture2D heart = LoadTexture("hungry.png");
+    Texture2D darksmile = LoadTexture("darksmile.png");
+    Texture2D darkheart = LoadTexture("darkhungry.png");
     Color cor_fundo;
     Color cor_quadro;
 
@@ -60,7 +57,7 @@ int main()
     switch (tipo)
     {
         case 1:
-        strcpy(pelagem,"OREO");
+        strcpy(nome,"OREO");
         pet = LoadTexture("oreo.png");
         pet_perder = LoadTexture("oreo_olho_fechado.png");
         som_pet = LoadSound("miado.wav");
@@ -72,7 +69,7 @@ int main()
         cor_quadro = CLITERAL(Color){140,142,95,255};
         break;
         case 2:
-        strcpy(pelagem,"PANTHERA");
+        strcpy(nome,"PANTHERA");
         pet = LoadTexture("panthera.png");
         pet_perder = LoadTexture("panthera_olho_fechado.png");
         som_pet = LoadSound("miado.wav");
@@ -84,7 +81,7 @@ int main()
         cor_quadro = CLITERAL(Color){232,196,126,255};
         break;
         case 3:
-        strcpy(pelagem,"KITTY");
+        strcpy(nome,"KITTY");
         pet = LoadTexture("kitty.png");
         pet_perder = LoadTexture("kitty_olho_fechado.png");
         som_pet = LoadSound("miado.wav");
@@ -96,7 +93,7 @@ int main()
         cor_quadro = CLITERAL(Color){146,127,152,255};
         break;
         case 4:
-        strcpy(pelagem,"MILO");
+        strcpy(nome,"MILO");
         pet = LoadTexture("milo.png");
         pet_perder = LoadTexture("milo_olho_fechado.png");
         som_pet = LoadSound("miado.wav");
@@ -108,7 +105,7 @@ int main()
         cor_quadro = CLITERAL(Color){176,114,114,255};
         break;
         case 5:
-        strcpy(pelagem,"PEPITO");
+        strcpy(nome,"PEPITO");
         pet = LoadTexture("pepito.png");
         pet_perder = LoadTexture("pepito_olho_fechado.png");
         som_pet = LoadSound("miado.wav");
@@ -120,7 +117,7 @@ int main()
         cor_quadro = CLITERAL(Color){77,92,104,255};
         break;
         case 6:
-        strcpy(pelagem,"LEO");
+        strcpy(nome,"LEO");
         pet = LoadTexture("leo.png");
         pet_perder = LoadTexture("leo_olho_fechado.png");
         som_pet = LoadSound("latido.wav");
@@ -128,11 +125,11 @@ int main()
         Cbutton = LoadTexture("TURQUOISECBUTTON.png");
         Fbutton_press = LoadTexture("TURQUOISEFBUTTON_PRESSED.png");
         Cbutton_press = LoadTexture("TURQUOISECBUTTON_PRESSED.png");
-        cor_fundo = CLITERAL(Color){106, 132, 123,255};
-        cor_quadro = CLITERAL(Color){149, 175, 166,255};
+        cor_fundo = CLITERAL(Color){106,132,123,255};
+        cor_quadro = CLITERAL(Color){149,175,166,255};
         break;
         case 7:
-        strcpy(pelagem,"ADELA");
+        strcpy(nome,"ADELA");
         pet = LoadTexture("adela.png");
         pet_perder = LoadTexture("adela_olho_fechado.png");
         som_pet = LoadSound("bolhas.wav");
@@ -140,11 +137,11 @@ int main()
         Cbutton = LoadTexture("MAGENTACBUTTON.png");
         Fbutton_press = LoadTexture("MAGENTAFBUTTON_PRESSED.png");
         Cbutton_press = LoadTexture("MAGENTACBUTTON_PRESSED.png");
-        cor_fundo = CLITERAL(Color){99, 31, 94,255};
-        cor_quadro = CLITERAL(Color){133, 40, 125,255};
+        cor_fundo = CLITERAL(Color){99,31,94,255};
+        cor_quadro = CLITERAL(Color){133,40,125,255};
         break;
         case 8:
-        strcpy(pelagem,"COCO");
+        strcpy(nome,"COCO");
         pet = LoadTexture("coco.png");
         pet_perder = LoadTexture("coco_olho_fechado.png");
         som_pet = LoadSound("grunhido.wav");
@@ -152,11 +149,11 @@ int main()
         Cbutton = LoadTexture("OLIVECBUTTON.png");
         Fbutton_press = LoadTexture("OLIVEFBUTTON_PRESSED.png");
         Cbutton_press = LoadTexture("OLIVECBUTTON_PRESSED.png");
-        cor_fundo = CLITERAL(Color){141, 133, 59,255};
-        cor_quadro = CLITERAL(Color){172, 165, 99,255};
+        cor_fundo = CLITERAL(Color){141,133,59,255};
+        cor_quadro = CLITERAL(Color){172,165,99,255};
         break;
         case 9:
-        strcpy(pelagem,"LULU");
+        strcpy(nome,"LULU");
         pet = LoadTexture("lulu.png");
         pet_perder = LoadTexture("lulu_olho_fechado.png");
         som_pet = LoadSound("latido.wav");
@@ -164,8 +161,20 @@ int main()
         Cbutton = LoadTexture("ANILCBUTTON.png");
         Fbutton_press = LoadTexture("ANILFBUTTON_PRESSED.png");
         Cbutton_press = LoadTexture("ANILCBUTTON_PRESSED.png");
-        cor_fundo = CLITERAL(Color){51, 49, 92,255};
+        cor_fundo = CLITERAL(Color){51,49,92,255};
         cor_quadro = CLITERAL(Color){81,78,150,255};
+        break;
+        case 10:
+        strcpy(nome,"PASCAL");
+        pet = LoadTexture("sapo.png");
+        pet_perder = LoadTexture("sapo_olho_fechado.png");
+        som_pet = LoadSound("coaxar.wav");
+        Fbutton = LoadTexture("ORANGEFBUTTON.png");
+        Cbutton = LoadTexture("ORANGECBUTTON.png");
+        Fbutton_press = LoadTexture("ORANGEFBUTTON_PRESSED.png");
+        Cbutton_press = LoadTexture("ORANGECBUTTON_PRESSED.png");
+        cor_fundo = CLITERAL(Color){189,119,34,255};
+        cor_quadro = CLITERAL(Color){227,159,70,255};
         break;
     }
 
@@ -192,9 +201,10 @@ int main()
         strcpy(msg,"-> PARABENS PELO SEU GATINHO ");
         DrawText(msg,50,80,25,WHITE);
 
-        DrawText(pelagem,50,120,25,WHITE);
+        DrawText(nome,50,120,25,WHITE);
         EndDrawing();
     }
+
     //LIMPEZA SE A JANELA FOR FECHADA
     if (WindowShouldClose())
     {
@@ -212,7 +222,6 @@ int main()
         UnloadSound(som_pet);
         UnloadSound(perder);
         UnloadSound(comer);
-        UnloadSound(ronronar);
         CloseWindow();
         CloseAudioDevice();
         return 0;
@@ -250,20 +259,13 @@ int main()
         UnloadSound(som_pet);
         UnloadSound(perder);
         UnloadSound(comer);
-        UnloadSound(ronronar);
         CloseWindow();
         CloseAudioDevice();
         return 0;
     }
 
-    if (volume==0)
-    {
-        musica = LoadMusicStream("musicavolumebaixo.mp3");
-    }
-    else if (volume==1)
-    {
-        musica = LoadMusicStream("musicavolumemedio.mp3");
-    }
+    if (volume==0){SetMasterVolume(0.5);}
+    else if (volume==1){SetMasterVolume(1.0);}
 
     //INICIALIZAÇÃO DE VARIAVEIS DO TIMER
     double ultimo_dano_fome = GetTime();
@@ -326,7 +328,6 @@ int main()
             {
                 felicidade+=10;
                 ultimo_dano_felicidade=tempo_atual;
-                qnthearts=felicidade/10;
             }
             else
             {felicidade+=(felicidademax-felicidade);}
@@ -379,7 +380,6 @@ int main()
         UnloadSound(som_pet);
         UnloadSound(perder);
         UnloadSound(comer);
-        UnloadSound(ronronar);
         CloseAudioDevice();
         CloseWindow();
         return 0;
@@ -456,7 +456,6 @@ int main()
     UnloadSound(som_pet);
     UnloadSound(perder);
     UnloadSound(comer);
-    UnloadSound(ronronar);
     CloseAudioDevice();
     CloseWindow();
     return 0;

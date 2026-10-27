@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1793032554 source:c:\users\cadudz\downloads\tamagotchi\main.c
+1793070045 source:c:\users\cadudz\downloads\tamagotchi\main.c
 	<string.h>
 	"raylib.h"
 	"computacao.h"
