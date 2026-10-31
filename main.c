@@ -19,25 +19,44 @@ int main()
     int barra_felicidade_y = 470;
     int barra_fome_x = 170;
     int barra_fome_y = 520;
+    int moedas=0;
     int volume=-1;
     int cuidado=0;
     int tipo = sorteio(10,1);
     int mostrar=1;
+    int Tamanho_Guarda_Roupa = 6;
+    int IndiceRoupaEmUso=-1;
 
     bool botaoC_press=false;
     bool botaoF_press=false;
 
+    GuardaRoupa acessorios[Tamanho_Guarda_Roupa];
+    for (int c=0;c>Tamanho_Guarda_Roupa;c++)
+    {
+        acessorios[c].tem=false;
+        acessorios[c].emuso=false;
+    }
+
+    acessorios[0].price = 100;
+    acessorios[1].price = 500;
+    acessorios[2].price = 300;
+
     double tempo_inicio_aviso;
+    float tempo_botao=0.0f;
     char msg[100];
     char nome[11];
 
-    Music musica = LoadMusicStream("musica.mp3");;
+    Music musica = LoadMusicStream("musica.ogg");
+    musica.looping=true;
+
     Sound som_pet;
+    Sound moeda = LoadSound("coin.wav");
     Sound perder = LoadSound("perder.wav");
     Sound comer = LoadSound("comer.wav");
 
-    Rectangle FbuttonP = { 200, 580, 96, 96 };;
-    Rectangle CbuttonP = { 400, 580, 96, 96 };;
+    Rectangle FbuttonP = { 200, 580, 96, 96 };
+    Rectangle CbuttonP = { 400, 580, 96, 96 };
+    Rectangle lojabutton = { 610, 30, 64, 64 };
 
     Texture2D pet;
     Texture2D pet_perder;
@@ -45,11 +64,22 @@ int main()
     Texture2D Cbutton;
     Texture2D Fbutton_press;
     Texture2D Cbutton_press;
-    Texture2D controle = LoadTexture("controle.png");
+    Texture2D loja = LoadTexture("loja.png");
+    Texture2D x = LoadTexture("X.png");
+    Texture2D coin = LoadTexture("coin_big.png");
     Texture2D smile = LoadTexture("smile.png");
     Texture2D heart = LoadTexture("hungry.png");
     Texture2D darksmile = LoadTexture("darksmile.png");
     Texture2D darkheart = LoadTexture("darkhungry.png");
+
+    acessorios[0].textura = LoadTexture ("Flor.png");
+    acessorios[1].textura = LoadTexture ("coroaview.png");
+    acessorios[2].textura = LoadTexture ("oculosview.png");
+
+    acessorios[0].textura_maior = LoadTexture ("Flor.png");
+    acessorios[1].textura_maior = LoadTexture ("coroa.png");
+    acessorios[2].textura_maior = LoadTexture ("oculos.png");
+
     Color cor_fundo;
     Color cor_quadro;
 
@@ -181,6 +211,10 @@ int main()
     double tempo_dano=5.0;
     double recarga_acao=2.0;
 
+    SetSoundVolume(moeda,2.0);
+    SetSoundVolume(som_pet,0.3);
+    SetSoundVolume(comer,0.3);
+    SetMusicVolume(musica,0.6);
     SetTargetFPS(60);
 
     //AVISO INICIAL
@@ -209,12 +243,20 @@ int main()
     if (WindowShouldClose())
     {
         UnloadTexture(pet);
+        UnloadTexture(coin);
+        UnloadTexture(acessorios[0].textura);
+        UnloadTexture(acessorios[1].textura);
+        UnloadTexture(acessorios[2].textura);
+        UnloadTexture(acessorios[0].textura_maior);
+        UnloadTexture(acessorios[1].textura_maior);
+        UnloadTexture(acessorios[2].textura_maior);
+        UnloadTexture(x);
         UnloadTexture(pet_perder);
         UnloadTexture(Fbutton);
         UnloadTexture(Cbutton);
         UnloadTexture(Fbutton_press);
         UnloadTexture(Cbutton_press);
-        UnloadTexture(controle);
+        UnloadTexture(loja);
         UnloadTexture(heart);
         UnloadTexture(smile);
         UnloadTexture(darkheart);
@@ -246,12 +288,20 @@ int main()
     if (WindowShouldClose())
     {
         UnloadTexture(pet);
+        UnloadTexture(coin);
+        UnloadTexture(acessorios[0].textura);
+        UnloadTexture(acessorios[1].textura);
+        UnloadTexture(acessorios[2].textura);
+        UnloadTexture(acessorios[0].textura_maior);
+        UnloadTexture(acessorios[1].textura_maior);
+        UnloadTexture(acessorios[2].textura_maior);
+        UnloadTexture(x);
         UnloadTexture(pet_perder);
         UnloadTexture(Fbutton);
         UnloadTexture(Cbutton);
         UnloadTexture(Fbutton_press);
         UnloadTexture(Cbutton_press);
-        UnloadTexture(controle);
+        UnloadTexture(loja);
         UnloadTexture(heart);
         UnloadTexture(smile);
         UnloadTexture(darkheart);
@@ -283,31 +333,52 @@ int main()
         Vector2 mouseposi = GetMousePosition();//EXTRAI A POSIÇÃO DO MOUSE EM VECTOR 2 (X,Y)
         bool mousesobrebotaoF = CheckCollisionPointRec(mouseposi,FbuttonP);
         bool mousesobrebotaoC = CheckCollisionPointRec(mouseposi,CbuttonP);
+        bool mousesobrebotaoloja = CheckCollisionPointRec(mouseposi,lojabutton);
 
         double tempo_atual = GetTime();
-        if (!IsMusicStreamPlaying(musica)){PlayMusicStream(musica);}
+
         UpdateMusicStream(musica);
+
+        if (cuidado>5)
+        {
+            cuidado=0;
+            moedas+=1000;
+            PlaySound(moeda);
+        }
 
         BeginDrawing();
         ClearBackground(cor_fundo);
 
-        //DESENHO CONTROLE
-        DrawTexture(controle,610,30,WHITE);
+        //DESENHO BOTAO LOJA
+        DrawTexture(loja,610,30,WHITE);
+
+        //DESENHO MOEDAS
+        DrawCoin(coin,moedas);
 
         //DESENHO BOTAO F
-        DrawButton(Fbutton_press,Fbutton,200,580,&botaoF_press);
+        DrawButton(Fbutton_press,Fbutton,200,580,&botaoF_press,&tempo_botao);
 
         //DESENHO BOTAO C
-        DrawButton(Cbutton_press,Cbutton,400,580,&botaoC_press);
+        DrawButton(Cbutton_press,Cbutton,400,580,&botaoC_press,&tempo_botao);
 
         //DESENHO PET E MOLDURA
         DrawPet(pet,cor_quadro);
+
+        //DESENHO ROUPA
+        DrawAccessories(acessorios,IndiceRoupaEmUso);
 
         //DESENHO BARRA DE FELICIDADE
         DrawPetLifeBar(smile,darksmile,barra_felicidade_x,barra_felicidade_y,felicidade,felicidademax);
 
         //DESENHO BARRA DE FOME
         DrawPetLifeBar(heart,darkheart,barra_fome_x,barra_fome_y,fome,fomemax);
+
+        //LOGICA LOJA
+        if (IsKeyPressed(KEY_L) || mousesobrebotaoloja && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            IndiceRoupaEmUso=lojafunction(cor_fundo,cor_quadro,musica,acessorios,&moedas);
+        }
+
 
         //LOGICA DE DANO
         if (tempo_atual-ultimo_dano_felicidade>=tempo_dano)
@@ -333,7 +404,6 @@ int main()
             {felicidade+=(felicidademax-felicidade);}
 
             //DESENHO BOTAO C
-            DrawButton(Cbutton_press,Cbutton,400,580,&botaoC_press);
             botaoC_press=true;
 
             cuidado++;
@@ -352,7 +422,6 @@ int main()
             {fome+=(fomemax-fome);}
 
             //DESENHO BOTAO F
-            DrawButton(Fbutton_press,Fbutton,200,580,&botaoF_press);
             botaoF_press=true;
 
             cuidado++;
@@ -366,12 +435,20 @@ int main()
     if (WindowShouldClose())
     {
         UnloadTexture(pet);
+        UnloadTexture(coin);
+        UnloadTexture(acessorios[0].textura);
+        UnloadTexture(acessorios[1].textura);
+        UnloadTexture(acessorios[2].textura);
+        UnloadTexture(acessorios[0].textura_maior);
+        UnloadTexture(acessorios[1].textura_maior);
+        UnloadTexture(acessorios[2].textura_maior);
+        UnloadTexture(x);
         UnloadTexture(pet_perder);
         UnloadTexture(Fbutton);
         UnloadTexture(Cbutton);
         UnloadTexture(Fbutton_press);
         UnloadTexture(Cbutton_press);
-        UnloadTexture(controle);
+        UnloadTexture(loja);
         UnloadTexture(heart);
         UnloadTexture(smile);
         UnloadTexture(darkheart);
@@ -390,6 +467,7 @@ int main()
     {
         mostrar=1;
         tempo_inicio_aviso = GetTime();
+        StopMusicStream(musica);
         while (mostrar==1)
         {
             if (mostrar && (GetTime()-tempo_inicio_aviso>=3.0))
@@ -423,12 +501,11 @@ int main()
             {
                 mostrar=0;
             }
+
             ClearBackground(cor_fundo);
             strcpy(msg,"-> CREDITOS\n");
             BeginDrawing();
-
             DrawText(msg,30,50,25,WHITE);
-
             strcpy(msg,"-> CARLOS EDUARDO DOS SANTOS ALVES ");
             DrawText(msg,30,80,25,WHITE);
             strcpy(msg,"-> DESENVOLVEDOR INDIE \n INICIANTE, UNIVERSITÁRIO ");
@@ -442,12 +519,20 @@ int main()
 
     //LIMPEZA
     UnloadTexture(pet);
+    UnloadTexture(coin);
+    UnloadTexture(acessorios[0].textura);
+    UnloadTexture(acessorios[1].textura);
+    UnloadTexture(acessorios[2].textura);
+    UnloadTexture(acessorios[0].textura_maior);
+    UnloadTexture(acessorios[1].textura_maior);
+    UnloadTexture(acessorios[2].textura_maior);
+    UnloadTexture(x);
     UnloadTexture(pet_perder);
     UnloadTexture(Fbutton);
     UnloadTexture(Cbutton);
     UnloadTexture(Fbutton_press);
     UnloadTexture(Cbutton_press);
-    UnloadTexture(controle);
+    UnloadTexture(loja);
     UnloadTexture(heart);
     UnloadTexture(smile);
     UnloadTexture(darkheart);
